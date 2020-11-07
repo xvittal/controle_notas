@@ -3,7 +3,7 @@ import React, { useEffect, useState } from 'react';
 function Login() {
 
 const [lista, setLista] = useState([]);
-const [erros, setErros] = useState(false);
+const [erros, setErros] = useState([]);
 
 // useEffect(() =>{
 //     Listar();
@@ -12,17 +12,31 @@ const [erros, setErros] = useState(false);
 const user = {nome: 'carlos', login: '123mudar'}
 
 const Listar = ()  => {
+    const headers = new Headers();
+    headers.append('Content-Type','application/json');
+    headers.append('Accept','application/json');
+    headers.append('Access-Control-Allow-Origin','*');
+    headers.append('Origin','http://localhost:3000');
+
     fetch("http://localhost/contole-notas/src/api/testePost.php",
     {
         mode:'no-cors',
         method: 'POST',
-        headers: {'Content-Type':'application/json'},
-        body: JSON.stringify({user})
+        credentials: 'include',
+        headers: headers,
+        body: JSON.stringify(user)
     })
     .then(res => res.json())
     .then(res => setLista(res))//=>  success
-    .catch(() => setErros(true))//=> failure
+    .catch(res => setErros(res))//=> failure
 }
+
+// const Listar = () =>{ //=> esse funciona...
+//     fetch('http://localhost/contole-notas/src/api/testePost.php')
+//     .then(resp => resp.json())
+//     .then(resp => setLista(resp))
+//     .catch(() => setErros(true));
+// }
 
 return(
     <>

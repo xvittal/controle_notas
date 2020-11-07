@@ -4,10 +4,17 @@ class Batata
 {
     public function Lista()
     {
-        $info = json_decode(file_get_contents('php://input'), 1);
         header("Access-Control-Allow-Origin:*");
-        header("Content-type: application/json");
-        if ($info < 0)
+        header('Access-Control-Allow-Methods: GET, POST, OPTIONS');
+        header("Content-type: application/json, Authorization");
+
+        $data = file_get_contents('php://input'); //=> recebe o payload
+        $info = json_decode($data, true); //=> faz a decodificação do json
+        
+        //print_r($info); //=> teste para ve se esta recebendo os dados... ok
+        //echo gettype($info);
+        
+        if ($info['nome'] != null)
         {
             $nome = $info['nome'];
             $login = $info['login'];
@@ -18,8 +25,10 @@ class Batata
             ];
             echo json_encode($batata);
         }
-        else
-            echo json_encode('error');        
+        else{
+            echo json_encode($erro = ['error'=>'erro']);        
+        }
+        
     }
 }
 
