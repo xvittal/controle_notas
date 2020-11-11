@@ -3,22 +3,22 @@ import React, { useEffect, useState } from 'react';
 function Login() {
 
 const [lista, setLista] = useState([]);
-const [erros, setErros] = useState([]);
+const [erros, setErros] = useState(false);
 
 // useEffect(() =>{
 //     Listar();
 // }, []);
 
-const user = {nome: 'carlos', login: '123mudar'}
+const user = {nome:'carlos',login:'123mudar'}
 
-const Listar = ()  => {
+async function Listar(){
     const headers = new Headers();
-    headers.append('Content-Type','application/json');
-    headers.append('Accept','application/json');
     headers.append('Access-Control-Allow-Origin','*');
-    headers.append('Origin','http://localhost:3000');
+    headers.append('Accept','application/json');
+    headers.append('Content-Type','application/json');
+    headers.append('Origin','http://localhost:8080');
 
-    fetch("http://localhost/contole-notas/src/api/testePost.php",
+    await fetch("http://localhost/contole-notas/src/api/testePost.php",
     {
         mode:'no-cors',
         method: 'POST',
@@ -28,7 +28,7 @@ const Listar = ()  => {
     })
     .then(res => res.json())
     .then(res => setLista(res))//=>  success
-    .catch(res => setErros(res))//=> failure
+    .catch(() => setErros(true))//=> failure
 }
 
 // const Listar = () =>{ //=> esse funciona...
